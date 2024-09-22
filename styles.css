@@ -24,10 +24,18 @@ label {
     margin-bottom: 5px;
 }
 
-textarea,
+textarea {
+    width: 90%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+
+}
+
 select,
 input[type="number"] {
-    width: 100%;
+    width: 80%;
     padding: 10px;
     margin-bottom: 15px;
     border: 1px solid #ccc;
@@ -47,4 +55,10 @@ input[type="submit"] {
 
 input[type="submit"]:hover {
     background-color: #0056b3;
+}
+
+.choices {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
 }
