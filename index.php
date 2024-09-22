@@ -9,9 +9,9 @@
 <body>
     <h1>Word Frequency Counter</h1>
     
-    <form action="process.php" method="post">
+    <form action="index.php" method="post">
         <label for="text">Paste your text here:</label><br>
-        <textarea id="text" name="text" rows="10" cols="50" required></textarea><br><br>
+        <textarea id="text" name="text" rows="10" cols="50" placeholder="Sample txt here!..." required></textarea><br><br>
         <div class="choices">
             <div>
                 <label for="sort">Sort by frequency:</label>
@@ -28,5 +28,40 @@
         
         <input type="submit" value="Calculate Word Frequency">
     </form>
+    <div class="result_display">
+        <?php
+            $text_input = $_POST["text"];
+            $asc_desc = $_POST["sort"];
+            $words_limit = $_POST["limit"];
+
+            $token = [];
+            $tokens =[];
+
+            for ($i=0;$i <= strlen($text_input);$i++) {
+                if ($i == strlen($text_input) or $text_input[$i] == " ") {
+
+                    for ($j=count($token)-1; $j != 0 ; $j--) { 
+                        $token[$j-1] = $token[$j-1].$token[$j];
+                    }
+                    array_push($tokens,$token[0]);
+                    $token = [];
+                }
+                else {
+                    array_push($token, $text_input[$i]);
+                    
+                } 
+                
+            }
+            for ($k=0; $k < count($tokens); $k++) { 
+                echo "$tokens[$k], ";
+            }
+            
+            
+
+        ?>
+    </div>
+
 </body>
 </html>
+
+
