@@ -28,37 +28,21 @@
         <input type="submit" value="Calculate Word Frequency">
     </form>
     <div class="result_display">
+        <h2>Unique Word Frequencies</h2>
         <?php
 
             $text_input = $_POST["text"];
             $asc_desc = $_POST["sort"];
             $words_limit = $_POST["limit"];
 
-
-
             function tokenizeTextInput(string $textInput) : array {
 
                 $tokens =[];
                 
-                /*
-                for ($i=0;$i <= strlen($textInput);$i++) {
-                    if ($i == strlen($textInput) or in_array($textInput[$i],$spaceLineBreak) > 0) {
-    
-                        for ($j=count($token)-1; $j > 0 ; $j--) { 
-                            $token[$j-1] = $token[$j-1].$token[$j];
-                        }
-                        $token = explode(" ",$token[0]);
-                        array_push($tokens,$token[0]);
-                        $token = [];
-                    }
-                    else {
-                        array_push($token, $textInput[$i]);
-                        
-                    } 
-                    }*/
-                $cleanedInput = str_replace(["\r\n", "\r", "\n","!",",","?","."], " ", $textInput);
-                $tokens = explode(" ", trim($cleanedInput));
-                $tokens = array_filter($tokens);    
+                //replace all exclamation, commas etc. into spaces (" ") 
+                $cleanedInput = str_replace(["\r\n", "\r", "\n","!",",","?",".","(",")"], " ", $textInput);
+                $tokens = explode(" ", trim($cleanedInput)); //remove all spaces
+                $tokens = array_filter($tokens);             //remove empty elements
                 return $tokens;
 
                 }
@@ -69,32 +53,29 @@
                 $tokenFrequency = [];
                 $tokens = tokenizeTextInput($textInput);
                 
-                foreach ($tokens as $key) {
-                    if (in_array($key, $stopWords)){
+                foreach ($tokens as $key) {           
+                    if (in_array($key, $stopWords)){    //check if word is in stopwords
                         continue;
                     } 
-                    if (isset($tokenFrequency[$key])) {
-                        $tokenFrequency[$key]++;
+                    if (isset($tokenFrequency[$key])) { //if word is in tokenfrequency array,
+                        $tokenFrequency[$key]++;        // if it is, increment,
                     } else {
-                        $tokenFrequency[$key]= 1;
+                        $tokenFrequency[$key]= 1;       //if not append it and put a value of 1
                     }
                 }
 
-                /*
-                for ($i=0;$i < count($tokens);$i++) {
-                    if (in_array($tokens[$i],$stopWords) > 0) {
-                        continue;
-
-                    } else if (in_array($tokens[$i],$tokenFrequency) == 0) {
-                        $tokenFrequency[$tokens[$i]] = 1 ;
-
-                    } else {
-                        $tokenFrequency[$tokens[$i]] ++;
-                    }
-
-                }*/
-
                 return $tokenFrequency;
+                }
+            
+            function ascOrDesc(array $tokenNized, $asc_desc) : array {
+                
+                if ($asc_desc == "asc") {       //if asec it is ascending(asort())
+                    asort($tokenNized);
+                    return $tokenNized;
+                } else {                        //else desc it is descending(arsort())
+                    arsort($tokenNized);
+                    return $tokenNized;
+                }
                 
             }
                 
@@ -102,13 +83,25 @@
                 echo "Enter Text First" ;
             } else {
                 $txt = frequencyCalc($text_input);
+                $txt = ascOrDesc($txt,$asc_desc);
+                $var = 0;
+               
                 foreach ($txt as $key => $value) {
-                    echo "$key: $value <br>";
+                    
+                    if ($var < $words_limit) {
+                        echo "$key =====> $value <br><hr>";
+                        $var++;
+                    }else {
+                        break;
+                    }
                 }
+
             }
+            
             
 
         ?>
+
     </div>
 
 </body>
