@@ -34,27 +34,26 @@
             $asc_desc = $_POST["sort"];
             $words_limit = $_POST["limit"];
 
-            $token = [];
-            $tokens =[];
+            function tokenizeTextInput($text_input) : array {
+                $token = [];
+                $tokens =[];
 
-            for ($i=0;$i <= strlen($text_input);$i++) {
-                if ($i == strlen($text_input) or $text_input[$i] == " ") {
-
-                    for ($j=count($token)-1; $j != 0 ; $j--) { 
-                        $token[$j-1] = $token[$j-1].$token[$j];
+                for ($i=0;$i <= strlen($text_input);$i++) {
+                    if ($i == strlen($text_input) or $text_input[$i] == " ") {
+    
+                        for ($j=count($token)-1; $j != 0 ; $j--) { 
+                            $token[$j-1] = $token[$j-1].$token[$j];
+                        }
+                        array_push($tokens,$token[0]);
+                        $token = [];
                     }
-                    array_push($tokens,$token[0]);
-                    $token = [];
+                    else {
+                        array_push($token, $text_input[$i]);
+                        
+                    } 
+                    }
+                return $tokens;
                 }
-                else {
-                    array_push($token, $text_input[$i]);
-                    
-                } 
-                
-            }
-            for ($k=0; $k < count($tokens); $k++) { 
-                echo "$tokens[$k], ";
-            }
             
             
 
