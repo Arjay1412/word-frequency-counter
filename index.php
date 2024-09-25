@@ -29,18 +29,24 @@
     </form>
     <div class="result_display">
         <h2>Unique Word Frequencies</h2>
+        <table>
+            <tr>
+                <th>Unique Words</th>
+                <th>Frequency</th>
+            </tr>
+
         <?php
 
-            $text_input = $_POST["text"];
-            $asc_desc = $_POST["sort"];
-            $words_limit = $_POST["limit"];
+            $text_input = @$_POST["text"];
+            $asc_desc = @$_POST["sort"];
+            $words_limit = @$_POST["limit"];
 
             function tokenizeTextInput(string $textInput) : array {
 
                 $tokens =[];
                 
                 //replace all exclamation, commas etc. into spaces (" ") 
-                $cleanedInput = str_replace(["\r\n", "\r", "\n","!",",","?",".","(",")"], " ", $textInput);
+                $cleanedInput = str_replace(["\r\n", "\r", "\n","!",",","?",".","(",")","-"], " ", $textInput);
                 $tokens = explode(" ", trim($cleanedInput)); //remove all spaces
                 $tokens = array_filter($tokens);             //remove empty elements
                 return $tokens;
@@ -82,25 +88,32 @@
             if ($text_input == null) {
                 echo "Enter Text First" ;
             } else {
-                $txt = frequencyCalc($text_input);
-                $txt = ascOrDesc($txt,$asc_desc);
+
+                $txt = frequencyCalc($text_input);  //calls frequency calculation function
+                $txt = ascOrDesc($txt,$asc_desc);   //calls ascending or desending function
                 $var = 0;
                
                 foreach ($txt as $key => $value) {
                     
                     if ($var < $words_limit) {
-                        echo "$key =====> $value <br><hr>";
+                        echo "<tr>";
+                        echo "<td>$key</td>";
+                        echo "<td>$value</td>";
+                        echo "</tr>";
+
                         $var++;
                     }else {
                         break;
                     }
                 }
 
+
             }
             
             
 
         ?>
+        </table>
 
     </div>
 
