@@ -40,6 +40,8 @@
             $text_input = @$_POST["text"];
             $asc_desc = @$_POST["sort"];
             $words_limit = @$_POST["limit"];
+            $wordCounter=0;
+            $freqCounter=0;
 
             function tokenizeTextInput(string $textInput) : array {
 
@@ -98,7 +100,9 @@
                     if ($var < $words_limit) {
                         echo "<tr>";
                         echo "<td>$key</td>";
+                        $wordCounter++;
                         echo "<td>$value</td>";
+                        $freqCounter = $freqCounter+$value;
                         echo "</tr>";
 
                         $var++;
@@ -106,7 +110,10 @@
                         break;
                     }
                 }
-
+                echo "<tr>";
+                echo "<td><b>Total: $wordCounter</b></td>";
+                echo "<td><b>Total: $freqCounter</b></td>";
+                echo "</tr>";
 
             }
             
